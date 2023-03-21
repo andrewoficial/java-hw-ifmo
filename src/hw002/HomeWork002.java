@@ -17,16 +17,14 @@ public class HomeWork002 {
             Дан номер месяца, например int month = 5. В зависимости от данного значения вывести в консоль время года
          */
         int month = 5;
-        if(month == 1){// 12
-            System.out.println("Зима");
-        }else if(month > 0 && month < 3){ // 1 2
+        if(month == 12 || month > 0 && month < 3){ // 1 2 12
             System.out.println("Зима");
         }else if(month > 2 && month < 6) { // 3 4 5
             System.out.println("Весна");
         }else if(month > 5 && month < 9) { // 6 7 8
             System.out.println("Лето");
         }else if(month > 5 && month < 9) { // 9 10 11
-            System.out.println("Зима");
+            System.out.println("Осень");
         }else {
             System.out.println("Недопустимый ввод"); //Dunno o.o
         }
