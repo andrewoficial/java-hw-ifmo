@@ -1,6 +1,9 @@
 package hw06.product;
 
 public class Product {
+    int varName = 5;
+
+
     private String name;
     private  double calories;
     private double protein;
@@ -10,14 +13,15 @@ public class Product {
 
 
     public Product(String name){
-        if(name == null || name.length() < 0){
-            throw new IllegalArgumentException("name не менее 0 символов");
+        if(name == null || name.length() < 1){
+            throw new IllegalArgumentException("name не менее 1 символов");
         }
         this.name = name;
     }
 
     public Product(String name, double calories){
         this(name);
+
         if(calories < 0.01){
             throw new IllegalArgumentException("calories не менее 0.01 ");
         }

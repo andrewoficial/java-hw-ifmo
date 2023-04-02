@@ -8,6 +8,11 @@ import hw06.travel.TravelGroup;
 
 public class Application {
     public static void main(String[] args) {
+        String myStr = new String("Canone");
+        myStr.length();
+
+
+
         Mountain goraOne = new Mountain("SuperGora", "SuperStrana", 800.5);
         Mountain goraTwo = new Mountain("justMountain", "justCountry", 555.1);
         Mountain goraThree = new Mountain("gora", "strana", 100.1);
@@ -33,7 +38,7 @@ public class Application {
         groupThree.printGroupInfo();
         System.out.println();
 
-        Product apple = new Product("Apple", 55,14,11,4);
+        Product apple = new Product("Антоновка", 55,14,11,4);
         Product breed = new Product("Breed", 764,453,432);
         Product milk = new Product("Milk", 120, 87, 21,12);
         Product someProduct = new Product("Something", 3,3);
