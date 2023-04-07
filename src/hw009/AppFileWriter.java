@@ -14,6 +14,8 @@ public class AppFileWriter implements Logable{
     public AppFileWriter(Logable obj){
 
     }
+
+    @Override
     public void log(String str){
         try {
             Files.writeString(Paths.get("file-name.txt"), "данные", StandardOpenOption.APPEND);
