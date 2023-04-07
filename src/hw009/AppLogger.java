@@ -2,7 +2,7 @@ package hw009;
 
 public class AppLogger implements Logable{
 
-    Logable currMethot;
+    private Logable currMethot;
     public AppLogger(){
 
     }

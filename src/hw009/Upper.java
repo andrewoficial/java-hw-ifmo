@@ -1,7 +1,7 @@
 package hw009;
 
 public class Upper  extends AppLogger implements Logable{
-    Logable currMethot;
+    private Logable currMethot;
 
     public Upper (){
 
