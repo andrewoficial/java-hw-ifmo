@@ -2,12 +2,12 @@ package hw009;
 
 public class ConsoleWriter extends AppLogger implements Logable{
 
-    public ConsoleWriter (Logable obj){
+    public ConsoleWriter(){
 
     }
 
-    public ConsoleWriter (){
-        this(new LogableObj());
+    public ConsoleWriter(Logable obj){
+
     }
     public void log(String str){
         System.out.println(str);

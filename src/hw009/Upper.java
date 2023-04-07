@@ -3,7 +3,10 @@ package hw009;
 public class Upper  extends AppLogger implements Logable{
 
 
-    public Upper(ConsoleWriter consoleWriter) {
+    public Upper (){
+
+    }
+    public Upper(Logable obj) {
 
     }
 

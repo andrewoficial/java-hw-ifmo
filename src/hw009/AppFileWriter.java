@@ -7,7 +7,13 @@ import java.nio.file.StandardOpenOption;
 
 public class AppFileWriter implements Logable{
 
+    public AppFileWriter(){
 
+    }
+
+    public AppFileWriter(Logable obj){
+
+    }
     public void log(String str){
         try {
             Files.writeString(Paths.get("file-name.txt"), "данные", StandardOpenOption.APPEND);
