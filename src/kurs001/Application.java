@@ -6,6 +6,18 @@ import java.util.Date;
 
 public class Application {
     public static void main(String[] args) {
+        /* Настройка какие типы абонементов куда пропускают что бы не было хардкода */
+        AbonementsType.ONCE.addTarget(VisitTarget.POOL);
+        AbonementsType.ONCE.addTarget(VisitTarget.GYM);
+
+        AbonementsType.DAY.addTarget(VisitTarget.GYM);
+        AbonementsType.DAY.addTarget(VisitTarget.GROUP);
+
+        AbonementsType.FULL.addTarget(VisitTarget.POOL);
+        AbonementsType.FULL.addTarget(VisitTarget.GYM);
+        AbonementsType.FULL.addTarget(VisitTarget.GROUP);
+
+        /* Создание дат для тестовых данных */
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 
         String dateInString = "15-09-2023";
@@ -23,6 +35,7 @@ public class Application {
             throw new RuntimeException(e);
         }
 
+        /* Создание "посетителей" для тестовых данных */
         Person human01 = new Person("Andrew", "Ivanov", 1995);
         Person human02 = new Person("Ivan", "Смирнов", 1992);
         Person human03 = new Person("Nikolay", "Кузнецов", 2000);
@@ -60,7 +73,7 @@ public class Application {
         Person human35 = new Person("Игорь", "Воронцов", 1988);
         Person human36 = new Person("Емельян", "Туров", 2003);
 
-
+        /* Создание абонементов для тестовых данных */
         Abonement abn01 = new Abonement (human01);
         Abonement abn02 = new Abonement (human02, date, AbonementsType.DAY);
         Abonement abn03 = new Abonement (human03, date, AbonementsType.DAY);
@@ -98,13 +111,10 @@ public class Application {
         Abonement abn35 = new Abonement (human35, date, AbonementsType.FULL);
         Abonement abn36 = new Abonement (human36, date, AbonementsType.DAY);
 
-
-        //abn01.printInfo();
-        //abn11.printInfo();
-        //abn21.printInfo();
-        //abn32.printInfo();
-
+        /* Создание объекта финтнес */
         Fitnes zdanie01 = new Fitnes();
+
+        /* Запуск процессов */
         zdanie01.visit(abn01, VisitTarget.GYM);
         zdanie01.visit(abn02, VisitTarget.GYM);
         zdanie01.visit(abn03, VisitTarget.GYM);
@@ -130,11 +140,7 @@ public class Application {
         zdanie01.visit(abn23, VisitTarget.GYM);
         zdanie01.visit(abn24, VisitTarget.GYM);
 
+        /* Вывод информации */
         zdanie01.printHumans();
-
-
-        //Попытка пройти в бассейн
-
-
     }
 }

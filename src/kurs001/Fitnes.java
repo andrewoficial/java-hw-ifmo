@@ -44,15 +44,7 @@ public class Fitnes {
             return;
         }
 
-        if(target == VisitTarget.GYM && (! abonement.isGym())){
-            System.out.println("Проход в выбранную вами зону недоступен по данному абонементу");
-            return;
-        }
-        if(target == VisitTarget.POOL && (! abonement.isPool())){
-            System.out.println("Проход в выбранную вами зону недоступен по данному абонементу");
-            return;
-        }
-        if(target == VisitTarget.GROUP && (! abonement.isGroupTrain())){
+        if(! abonement.isAllow(target)){
             System.out.println("Проход в выбранную вами зону недоступен по данному абонементу");
             return;
         }
