@@ -1,17 +1,16 @@
 package kurs001;
 
-import java.time.LocalTime;
 
 public enum VisitTarget {
     GYM("спортивный зал"), POOL("бассейн"), GROUP("групповые занятия");
 
     private final String name;
 
-    private VisitTarget(String name){
-        //ToDO проверки
+    VisitTarget(String name){ //модификатор private не нужен он и так private потому что ENUMS
+        if(name == null || name.length() < 1){
+            throw new IllegalArgumentException("Неверное название категории (строка или null или слишком коротка");
+        }
         this.name = name;
     }
-    public String getName() {
-        return name;
-    }
+
 }

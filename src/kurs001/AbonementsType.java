@@ -9,27 +9,26 @@ public enum AbonementsType {
     DAY("08:00", "16:00"),
     FULL("08:00", "22:00");
 
-    private LocalTime allowStart = LocalTime.parse( "08:00" );
-    private LocalTime allowEnd = LocalTime.parse( "22:00" );
-    private VisitTarget[] allowedPlaces = new VisitTarget[3];
+    //Нет необходимости лишний дергать LocalTime.parse
+    //private LocalTime allowStart = LocalTime.parse( "08:00" );
+    private final LocalTime allowStart;
+    private final LocalTime allowEnd;
+    private final VisitTarget[] allowedPlaces = new VisitTarget[3];
     private int placeCounter = 0;
     AbonementsType(String start, String end){//Доступен только внутри перечисления
+        if(start == null || start.length() != 5){
+            throw new IllegalArgumentException("Передана неверная строка с описанием времени начала (null или не равна 5");
+        }
+        if(end == null || end.length() != 5){
+            throw new IllegalArgumentException("Передана неверная строка с описанием времени истечения (null или не равна 5");
+        }
         this.allowStart = LocalTime.parse( start );
         this.allowEnd = LocalTime.parse( end );
     }
 
 
     public void addTarget(VisitTarget tg) {
-        for (int i = 0; i < allowedPlaces.length; i++) { //ToDO повтор кода убрать но не понял как вызвать isAllow
-            if(allowedPlaces[i] == null){
-                continue;
-            }
-            if(allowedPlaces[i] == tg){// == потому что ENUMS
-                System.out.println("Такое разрешение уже имеется");
-                return;
-            }
-        }
-        if(placeCounter < allowedPlaces.length){
+        if((! this.isAllow(tg)) && placeCounter < allowedPlaces.length){
             allowedPlaces[placeCounter] = tg;
             placeCounter++;
         }else{
@@ -38,6 +37,9 @@ public enum AbonementsType {
     }
 
     public boolean isAllow(VisitTarget tg){
+        if(tg == null){
+            throw new IllegalArgumentException("Передана неверная цель визита");
+        }
         for (int i = 0; i < allowedPlaces.length; i++) {
             if(allowedPlaces[i] == null){
                 continue;

@@ -1,15 +1,11 @@
 package kurs001;
 
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Abonement {
     private static long abonementsCount = 0; //Общий счетчик выданных абонементов (потом удобно будет в б.д как ключ использовать)
-    private long number = 0;
+    private long number;
     private Date creDateTime = new Date(); //Неявно final ведь есть только геттер
     private Date expDateTime = new Date(creDateTime.getTime() + (1000 * 60 * 60 * 24));
 
@@ -32,6 +28,9 @@ public class Abonement {
         if(type == null){
             throw new IllegalArgumentException("Передан неверный тип абонемента");
         }
+        if(exp == null){
+            throw new IllegalArgumentException("Передана неверная дата");
+        }
         expDateTime = exp;
         Abonement.abonementsCount = Abonement.abonementsCount + 1;
         number = Abonement.abonementsCount;
@@ -53,19 +52,18 @@ public class Abonement {
     }
 
     public boolean isAllow(VisitTarget tg) {
+        if(tg == null){
+            throw new IllegalArgumentException("Передана неверная цель визита");
+        }
         return this.type.isAllow(tg);
-    }
-
-
-    public long getNumber() {
-        return number;
     }
 
     public Person getOwner() {
         return owner;
     }
 
-    //функция вывода информации об абонементе (нет в задании использую для отлабки)
+    /*
+    //функция вывода информации об абонементе (нет в задании использую для отладки)
     public void printInfo(){
         System.out.println("Информация об абонементе №" + this.number);
         System.out.println("Тип абонемента:" + this.type);
@@ -79,4 +77,5 @@ public class Abonement {
         System.out.println("Дата создания абонемента:" + this.creDateTime);
         System.out.println("Дата окончания абонемента:" + this.expDateTime);
     }
+    */
 }
