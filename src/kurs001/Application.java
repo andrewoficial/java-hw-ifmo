@@ -7,15 +7,14 @@ import java.util.Date;
 public class Application {
     public static void main(String[] args) {
         /* Настройка какие типы абонементов куда пропускают что бы не было хардкода */
-        AbonementsType.ONCE.addTarget(VisitTarget.POOL);
-        AbonementsType.ONCE.addTarget(VisitTarget.GYM);
 
-        AbonementsType.DAY.addTarget(VisitTarget.GYM);
-        AbonementsType.DAY.addTarget(VisitTarget.GROUP);
+        System.out.println(AbonementsType.DAY.isAllow(VisitTarget.GYM));
+        //AbonementsType.DAY.addTarget(VisitTarget.GYM);
+        //AbonementsType.DAY.addTarget(VisitTarget.GROUP);
 
-        AbonementsType.FULL.addTarget(VisitTarget.POOL);
-        AbonementsType.FULL.addTarget(VisitTarget.GYM);
-        AbonementsType.FULL.addTarget(VisitTarget.GROUP);
+        //AbonementsType.FULL.addTarget(VisitTarget.POOL);
+        //AbonementsType.FULL.addTarget(VisitTarget.GYM);
+        //AbonementsType.FULL.addTarget(VisitTarget.GROUP);
 
         /* Создание дат для тестовых данных */
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
