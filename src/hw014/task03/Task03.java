@@ -1,6 +1,6 @@
 package hw014.task03;
 
-import java.util.List;
+import java.util.*;
 
 public class Task03 {
     public static void main(String[] args) {
@@ -36,5 +36,34 @@ public class Task03 {
         //  8. для сортировки по нескольким критериям объединить компараторы,
         //  например, Comparator<Employee> comparator02 = new NameComparator().thenComparing(new SalaryComparator());
         //  9. Вызвать метод Collections.sort(), передать в него список employeeList и нужный (согласно заданию) компаратор (объединенный или нет)
+        Comparator<Employee> nameComparator = new Employee.NameComparator();
+        Comparator<Employee> salaryComparator = new Employee.SalaryComparator();
+        Comparator<Employee> ageComparator = new Employee.AgeComparator();
+        Comparator<Employee> companyComparator = new Employee.CompanyComparator();
+
+        Comparator<Employee> comparator02 = new Employee.NameComparator().thenComparing(new Employee.SalaryComparator());
+        Comparator<Employee> comparator03 = new Employee.NameComparator().thenComparing(new Employee.SalaryComparator().thenComparing(new Employee.AgeComparator().thenComparing(new Employee.CompanyComparator())));
+
+        System.out.println("employeeList до сортировки:");
+        System.out.println(employeeList);
+
+        TreeSet<Employee> usersTreeSet = new TreeSet<>(employeeList);
+        System.out.println("usersTreeSet до сортировки (отсортирован из-за переопределения equals):");
+        System.out.println(usersTreeSet);
+
+
+        System.out.println("После первой сортировки:");
+        employeeList.sort(nameComparator);
+        System.out.println(employeeList);
+
+
+        System.out.println("После второй сортировки:");
+        employeeList.sort(comparator02);
+        System.out.println(employeeList);
+
+        System.out.println("После третьей сортировки:");
+        employeeList.sort(comparator03);
+        System.out.println(employeeList);
+
     }
 }
