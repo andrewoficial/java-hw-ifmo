@@ -39,36 +39,37 @@ class Task {
     }
 
     public static void main(String[] args) {
-        Task.</* ВОПРОС: какие типы можно указать ??? */>void01(/* ВОПРОС: какие типы можно передать ??? */);
-        Task.<Cat>void01(Cat, Kitten);
+
+        //Task.</* ВОПРОС: какие типы можно указать ??? */>void01(/* ВОПРОС: какие типы можно передать ??? */);
+        //Task.<Cat>void01(Cat, Kitten);
         //<Cat> потому что он разрешен и implements Eatable
         //(Cat, Kitten) потому что можно передать объекты этого класса и его потомков
-        Task.<Kitten>void01(Kitten);
+        // Task.<Kitten>void01(Kitten);
         //<Kitten> потому что он наследует Cat, который разрешен и implements Eatable
         //(Kitten) потому что можно передать объекты этого класса и его потомков
         //Больше ничего не подоходит
 
-        Task.</* ВОПРОС: какие типы можно указать ??? */>void02(/* ВОПРОС: какие типы можно передать ??? */);
-        Task.<Cat>void01(Cat, Kitten);
+        //Task.</* ВОПРОС: какие типы можно указать ??? */>void02(/* ВОПРОС: какие типы можно передать ??? */);
+        //Task.<Cat>void01(Cat, Kitten);
         //<Cat> потому что он наследник Animal и implements Eatable, который implements Serializable
         //(Cat, Kitten) потому что можно передать объекты этого класса и его потомков
-        Task.<Kitten>void01(Kitten);
+        //Task.<Kitten>void01(Kitten);
         //<Kitten> потому что он наследник Cat который наследник Animal и implements Eatable, который extends Serializable
         //(Kitten) потому что можно передать объекты этого класса и его потомков
-        Task.<Dog>void01(Dog);
+        //Task.<Dog>void01(Dog);
         //<Dog> потому что он наследник Animal и implements Serializable & Runnable
         //(Dog) потому что можно передать объекты этого класса и его потомков
         //Больше ничего не подоходит
 
 
-        Task.<Dog>void03(/* ВОПРОС: какие типы можно передать ??? */);
-        Task.<Dog>void01(Dog);
+        //Task.<Dog>void03(/* ВОПРОС: какие типы можно передать ??? */);
+        //Task.<Dog>void01(Dog);
         //<Dog> потому что он implements Serializable & Runnable
         //(Dog) потому что можно передать объекты этого класса и его потомков
-        Task.<Cat>void01(Cat, Kitten);
+        //Task.<Cat>void01(Cat, Kitten);
         //<Cat> потому что он наследник Animal, и implements Eatable, который extends Serializable
         //(Cat, Kitten) потому что можно передать объекты этого класса и его потомков
-        Task.<Kitten>void01(Kitten);
+        //Task.<Kitten>void01(Kitten);
         //<Kitten> потому что он наследник Cat который наследник Animal, и implements Eatable, который extends Serializable
         //(Kitten) потому что можно передать объекты этого класса и его потомков
         //Больше ничего не подоходит
