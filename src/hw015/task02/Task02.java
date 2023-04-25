@@ -194,11 +194,17 @@ public class Task02 {
 
         ValuesComparator valComparator = new ValuesComparator();
         myArrayList.sort(valComparator);
+        int count = Math.min(10, myArrayList.size());
+        for (int i = 0; i < count; i++) {
+            System.out.println(myArrayList.get(i).getValue() + "=" + myArrayList.get(i).getKey());
+        }
+
+        /*
         for (Map.Entry<String, Integer> stringIntegerEntry : myArrayList) {
             System.out.println(stringIntegerEntry.getKey());
             //System.out.println(stringIntegerEntry.getKey() + " contains in text " + stringIntegerEntry.getValue());
         }
-
+        */
     }
 
 
