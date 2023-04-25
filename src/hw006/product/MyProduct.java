@@ -1,6 +1,4 @@
-package hw06.product;
-
-import hw06.travel.Human;
+package hw006.product;
 
 public class MyProduct {
     private double proteinLimit;

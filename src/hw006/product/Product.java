@@ -1,4 +1,4 @@
-package hw06.product;
+package hw006.product;
 
 public class Product {
     int varName = 5;

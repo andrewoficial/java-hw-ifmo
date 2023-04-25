@@ -1,4 +1,4 @@
-package hw06.travel;
+package hw006.travel;
 
 public class TravelGroup {
     private boolean isOpen;

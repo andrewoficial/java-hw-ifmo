@@ -1,10 +1,10 @@
-package hw06;
+package hw006;
 
-import hw06.product.MyProduct;
-import hw06.product.Product;
-import hw06.travel.Human;
-import hw06.travel.Mountain;
-import hw06.travel.TravelGroup;
+import hw006.product.MyProduct;
+import hw006.product.Product;
+import hw006.travel.Human;
+import hw006.travel.Mountain;
+import hw006.travel.TravelGroup;
 
 public class Application {
     public static void main(String[] args) {
