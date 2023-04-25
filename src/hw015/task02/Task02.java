@@ -14,7 +14,17 @@ public class Task02 {
         //      2.2. полученное значение сравнивать со значением someString, если они равны, ключ пары (метод getKey())
         //      добавлять в список, объявленный в п.1
         //   3. Список, объявленный в п.1, вернуть из метода
-        return null;
+
+        ArrayList<String> arrList = new ArrayList<>();
+        for (Map.Entry<String, String> pair : map.entrySet()) {
+            if (pair.getValue().equals(someString)){
+                arrList.add(pair.getKey());
+                //System.out.println(pair.getKey());
+            }
+            // pair.getKey() - ключ
+            // pair.getValue() - ассоциированное с ним значение
+        }
+        return arrList;
     }
 
     private static Map<String, Integer> task02(List<String> strings) {
@@ -26,7 +36,16 @@ public class Task02 {
         //      увеличивать его на 1, записывать в мапу ключ и новое значение (обновляем количество повторений данной строки)
         //      2.3. если ключ не содержится, записывать в мапу ключ и 1 (строка из списка встретилась первый раз)
         //   3. Мапу, объявленную в п.1, вернуть из метода
-        return null;
+        HashMap<String, Integer> answ = new HashMap<>();
+        for (String string : strings) {
+            if(answ.containsKey(string)){
+                answ.put(string, answ.get(string) + 1);
+                //System.out.println(answ);
+            }else{
+                answ.put(string, 1);
+            }
+        }
+        return answ;
     }
 
     private static Map<String, Long> task0301(String text) {
@@ -39,7 +58,16 @@ public class Task02 {
         //      увеличивать его на 1, записывать в мапу ключ и новое значение (обновляем количество повторений данной строки)
         //      3.3. если ключ не содержится, записывать в мапу ключ и 1 (строка из списка встретилась первый раз)
         //   4. Мапу, объявленную в п.1, вернуть из метода
-        return null;
+        HashMap<String, Long> answ = new HashMap<>();
+        String[] words = text.split(" ");
+        for (String word : words) {
+            if(answ.containsKey(word)) {
+                answ.put(word, answ.get(word) + 1L);
+            }else{
+                answ.put(word, 1L);
+            }
+        }
+        return answ;
     }
 
     private static Map<Integer, ArrayList<String>> task0302(String text) {
@@ -55,7 +83,20 @@ public class Task02 {
         //      3.4. если ключ не содержится, создавать пустой список (ArrayList<String>),
         //      добавлять в него строку (элемент массива), записывать в мапу ключ и созданный список
         //   4. Мапу, объявленную в п.1, вернуть из метода
-        return null;
+        HashMap<Integer, ArrayList<String>> answ = new HashMap<>();
+        String[] words = text.split(" ");
+        for (String word : words) {
+            int strLen = word.length();
+            if(answ.containsKey(strLen)){
+                answ.get(strLen).add(word);
+                //System.out.println(answ);
+            }else{
+                ArrayList<String> toAdd = new  ArrayList<>();
+                toAdd.add(word);
+                answ.put(strLen, toAdd);
+            }
+        }
+        return answ;
     }
 
     public static void main(String[] args) {
@@ -110,6 +151,7 @@ public class Task02 {
                 " sometimes on purpose injected humour and the like";
 
         System.out.println(task0301(text));
+        System.out.println("Task task0302"); //Checked
         System.out.println(task0302(text));
         task0303(text);
 
@@ -135,5 +177,29 @@ public class Task02 {
         //   8. Вызвать метод sort() списка из п.4, передать в него компаратор из п.7
         //   9. Написать цикл на 10 итераций (или по количеству элементов списка (если их меньше 10)).
         //   Цикл должен перебирать список п.4, на каждой итерации выводить в консоль значение свойства key (метод getKey) элемента списка
+        String[] words = text.split(" ");
+        List<String> listWords = Arrays.asList(words);
+        HashMap<String, Integer> myMapa = new HashMap <>(task02(listWords));
+        //System.out.println(myMapa); //Checked
+        ArrayList<Map.Entry<String, Integer>> myArrayList = new ArrayList<>(myMapa.entrySet());
+        //System.out.println(myArrayList); //Checked
+
+        class ValuesComparator implements Comparator<Map.Entry<String, Integer>>{
+
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                return o2.getValue() - o1.getValue();
+            }
+        }
+
+        ValuesComparator valComparator = new ValuesComparator();
+        myArrayList.sort(valComparator);
+        for (Map.Entry<String, Integer> stringIntegerEntry : myArrayList) {
+            System.out.println(stringIntegerEntry.getKey());
+            //System.out.println(stringIntegerEntry.getKey() + " contains in text " + stringIntegerEntry.getValue());
+        }
+
     }
+
+
 }
