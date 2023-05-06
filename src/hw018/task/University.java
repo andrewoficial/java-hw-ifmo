@@ -34,8 +34,8 @@ public class University {
         // если курсы одинаковы по стоимости, сортирует по продолжительности
 
         //ToDo узнать как сделать
-        //Comparator<Course> compareByPrice = (course1, course2) -> (int) (course1.getPrice() - course2.getPrice());
-        //fruits.sort(compareByPrice); // или Collections.sort(fruits, compareByPrice);
+        Comparator<Course> compareByPrice = (course1, course2) -> (int) (course1.getPrice() - course2.getPrice());
+        courses.sort(compareByPrice); // или Collections.sort(fruits, compareByPrice);
     }
 
     public void upDuration(double currentPrice) {
