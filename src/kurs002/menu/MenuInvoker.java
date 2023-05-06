@@ -47,48 +47,39 @@ public class MenuInvoker {
                 menu.add("Загрузить игру");
                 if(hasStarted){
                     menu.add("Сохранить игру");
-                    addCommand(""+(menu.size()-2), new Save());
+                    this.addCommand(""+(menu.size()-2), new Save());
+                    System.out.println("DBG:" + "Add class save. Position:"+(menu.size()-2));
                     menu.add("Выйти");
                 }else{
                     menu.add("Выйти");
                 }
             }
             for (String s : menu) {
-
                 if(menu.indexOf(s) > 0){
                     System.out.println(menu.indexOf(s) + ". "+ s);
                 }else{
-                    //System.out.println(menu.size());
                     System.out.println(s);
                 }
-
             }
 
             System.out.print("Введите номер команды: ");
             String input = scanner.nextLine();
-            if (input.equals(""+(menu.size()-1))) {
-                if(shortMenu){
-                    System.out.println("Back to main menu");
-                    shortMenu = false;
-                }else {
-                    shortMenu = false;
-                    hasStarted = false;
-                    break;
-                }
-            }
-
             Command command = commands.get(input);
-            if (command != null) {
-                if(!shortMenu && ! input.equals(""+(menu.size()-1))){
-                    addCommand(""+(menu.size()-1), null);
 
-                    if(!hasStarted && input.equals(""+1)){
-                        hasStarted = true;
+            if (command != null) {
+                if(shortMenu){
+                    if(input.equals(""+(menu.size()-1))){
+                        shortMenu = false;
                     }
+                }else{
                     shortMenu = true;
+                    command.execute();
                 }
-                command.execute();
-            } else {
+
+            }else if(input.equals(""+(menu.size()-1))){
+                System.out.println("Выход через главное меню");
+                break;
+            }else{
                 System.out.println("Некорректный ввод, повторите попытку");
             }
         }

@@ -35,14 +35,18 @@ public class Start implements Command {
 
         card01.setPrev(card03);
         card01.setNext(card02);
+        card03.setPrev(card01);
+        card03.setNext(card01);
+
         System.out.println("Начинаю игру...");
         if(this.currCard == null){
             this.currCard = card01;
         }
         Scanner scanner = new Scanner(System.in);
-        Map<String, Command> commands = new HashMap<>();
-        ArrayList <String> menu = new ArrayList<>(); //<String> что бы не было сырого типа данных
+
         while(true){
+            Map<String, Command> commands = new HashMap<>();
+            ArrayList <String> menu = new ArrayList<>(); //<String> что бы не было сырого типа данных
             if(currCard.getNext() == null || currCard.getPrev() == null){
                 System.out.println("Игра завершена!");
                 break;
@@ -67,6 +71,7 @@ public class Start implements Command {
             String input = scanner.nextLine();
             if (input.equals(""+(menu.size()-1))) {
                 System.out.println("Back to main menu");
+                break;
             }else if(input.equals("1")){
                 currCard = currCard.getNext();
             }else{

@@ -5,6 +5,7 @@ import kurs002.Command;
 public class Exit implements Command {
     @Override
     public void execute() {
-        System.out.println("Выход из игры");
+        System.out.println("Выход из игры через метод Exit");
+        System.exit(0);
     }
 }
