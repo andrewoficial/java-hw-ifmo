@@ -60,7 +60,7 @@ public class Start implements Command {
 
             String input = scanner.nextLine();
             if (input.equals(""+(menu.size()-1))) {
-                System.out.println("Back to main menu");
+                //System.out.println("Back to main menu");
                 break;
             }else if(input.equals("1")){
                 currentState.setState(currentState.getState().getNext());

@@ -10,7 +10,7 @@ public class Application {
         Card.Card02.setPrev(null);
         Card.Card02.setNext(null);
         Card.Card03.setPrev(Card.Card04);
-        Card.Card03.setNext(Card.Card01);
+        Card.Card03.setNext(Card.Card04);
         Card.Card04.setPrev(Card.Card05);
         Card.Card04.setNext(Card.Card06);
         Card.Card05.setPrev(Card.Card01);
