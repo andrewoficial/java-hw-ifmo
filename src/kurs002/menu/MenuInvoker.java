@@ -2,6 +2,7 @@ package kurs002.menu;
 
 import kurs002.Card;
 import kurs002.Command;
+import kurs002.GameState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,72 +14,66 @@ public class MenuInvoker {
     private boolean shortMenu = false;
     private boolean hasStarted = false;
 
-    private Card currCard;
+    private GameState gameState;
     public void addCommand(String name, Command command) {
         commands.put(name, command);
     }
-    public boolean getTypeMenu(){
-        return shortMenu;
-    }
-
     public boolean getIsStarted(){
         return hasStarted;
     }
 
-    public void setCard(Card card){
-        this.currCard = card;
+    public void setState(GameState state){
+        this.gameState = state;
     }
 
-    public Card getCard(){
-        return currCard;
+    public ArrayList <String> menu = new ArrayList<>();
+    public void renderMenu(){
+
+
+        for (String s : menu) {
+            if(menu.indexOf(s) > 0){
+                System.out.println(menu.indexOf(s) + ". "+ s);
+            }else{
+                System.out.println(s);
+            }
+        }
+        System.out.print("Введите номер команды: ");
     }
+
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            ArrayList <String> menu = new ArrayList<>(); //<String> что бы не было сырого типа данных
-
-
-            if(shortMenu){
-                menu.add("Меню:");
+            menu.clear();
+            menu.add("Меню:");
+            if(gameState.haveState()){
+                menu.add("Продолжить игру");
+            }else{
+                menu.add("Начать игру (начало отрисовки параграфов)");
+            }
+            menu.add("Загрузить игру");
+            if(gameState.haveState()){
+                menu.add("Сохранить игру");
+                //System.out.println("DBG:" + "Add menu item save. Position:"+(menu.size()-2));
                 menu.add("Выйти");
             }else{
-                menu.add("Меню:");
-                menu.add("Начать игру (начало отрисовки параграфов)");
-                menu.add("Загрузить игру");
-                if(hasStarted){
-                    menu.add("Сохранить игру");
-                    this.addCommand(""+(menu.size()-2), new Save());
-                    System.out.println("DBG:" + "Add class save. Position:"+(menu.size()-2));
-                    menu.add("Выйти");
-                }else{
-                    menu.add("Выйти");
-                }
+                menu.add("Выйти");
             }
-            for (String s : menu) {
-                if(menu.indexOf(s) > 0){
-                    System.out.println(menu.indexOf(s) + ". "+ s);
-                }else{
-                    System.out.println(s);
-                }
+            if(gameState.haveState()){
+                this.addCommand(""+(menu.size()-2), new Save(this.gameState));
+                //System.out.println("DBG:" + "Add menu command save. Position:"+(menu.size()-2));
+                this.addCommand(""+(menu.size()-1), new Exit());
+                //System.out.println("DBG:" + "Add menu command save. Position:"+(menu.size()-1));
             }
+            renderMenu();
 
-            System.out.print("Введите номер команды: ");
             String input = scanner.nextLine();
             Command command = commands.get(input);
 
             if (command != null) {
-                if(shortMenu){
-                    if(input.equals(""+(menu.size()-1))){
-                        shortMenu = false;
-                    }
-                }else{
-                    shortMenu = true;
-                    command.execute();
-                }
-
+                command.execute();
             }else if(input.equals(""+(menu.size()-1))){
                 System.out.println("Выход через главное меню");
-                break;
+                new Exit();
             }else{
                 System.out.println("Некорректный ввод, повторите попытку");
             }
