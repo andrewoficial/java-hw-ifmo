@@ -26,6 +26,12 @@ public class MenuInvoker {
         this.gameState = state;
     }
 
+    public String getItemName(int num){
+        if(num > menu.size()-1){
+            return "";
+        }
+        return menu.get(num);
+    }
     public ArrayList <String> menu = new ArrayList<>();
     public void renderMenu(){
 
