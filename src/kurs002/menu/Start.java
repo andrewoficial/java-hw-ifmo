@@ -48,7 +48,7 @@ public class Start implements Command {
             menu.add(currentState.getState().getPrev().getTitle());
             menu.add("Выйти");
 
-            System.out.println("DBG:" + currentState.getState().getTitle());
+            //System.out.println("DBG:" + currentState.getState().getTitle());
             System.out.println(currentState.getState().getContent());
             for (String s : menu) {
                 if(menu.indexOf(s) > 0){

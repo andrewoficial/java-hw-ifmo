@@ -18,6 +18,11 @@ public class Application {
         Card.Card06.setPrev(Card.Card02);
         Card.Card06.setNext(Card.Card01);
 
+        Card2 Card005Class = new Card2();
+        //Теперь я не знаю как воспользоваться этим объектом
+        //   в классе Start в районе 32 строки. Или передавать его при запуске программы?
+
+
         GameState gameState = new GameState(null);
         MenuInvoker invoker = new MenuInvoker();
         invoker.addCommand("1", new Start(gameState));
