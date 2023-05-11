@@ -5,30 +5,57 @@ import kurs002.menu.*;
 
 public class Application {
     public static void main(String[] args) {
-        Card.Card01.setPrev(Card.Card03);
-        Card.Card01.setNext(Card.Card02);
-        Card.Card02.setPrev(null);
-        Card.Card02.setNext(null);
-        Card.Card03.setPrev(Card.Card04);
-        Card.Card03.setNext(Card.Card04);
-        Card.Card04.setPrev(Card.Card05);
-        Card.Card04.setNext(Card.Card06);
-        Card.Card05.setPrev(Card.Card01);
-        Card.Card05.setNext(Card.Card01);
-        Card.Card06.setPrev(Card.Card02);
-        Card.Card06.setNext(Card.Card01);
 
-        Card2 Card005Class = new Card2();
-        //Теперь я не знаю как воспользоваться этим объектом
-        //   в классе Start в районе 32 строки. Или передавать его при запуске программы?
+        Card2 card001Class = new Card2("Лисенок",
+                "Каждое утро Лисёнок просыпался, завтракал и шёл увидеться с " +
+                        "Бельчонком. \n Это утро не было исключением. Лисёнок пришёл на их обычное место встречи, но Бельчонка " +
+                        "там не было. \n Лисёнок ждал, ждал, но так и не смог дождаться своего друга. \" \n Бельчонок не пропустил " +
+                        "еще ни одной встречи, вдруг он попал в беду. \n \" - подумал Лисёнок. Как поступить Лисенку?");
 
+        Card2 card002Class = new Card2("Вернуться домой",
+                "Вернувшись домой, Лисёнок нашёл там Бельчонка. \n " +
+                        "Оказалось, что Бельчонок пришёл на место встречи раньше и увидел там рой злобных пчел. \n Он поспешил " +
+                        "предупредить об этом Лисёнка, но они разминулись. \n Наконец-то друзья нашли друг друга! \n Игра завершилась " +
+                        "успехом");
 
-        GameState gameState = new GameState(null);
-        MenuInvoker invoker = new MenuInvoker();
-        invoker.addCommand("1", new Start(gameState));
-        invoker.addCommand("2", new Load());
-        invoker.addCommand("3", new Exit());
-        invoker.setState(gameState);
-        invoker.run();
+        Card2 card003Class = new Card2("Отправиться на поиски",
+                "Все лесные жители были заняты своими делами и не \n " +
+                        "обращали внимания на Лисёнка и его проблему. \n" +
+                        "Но вдруг кто нибудь видел Бельчонка... \n Лисёнок не знал, что ему делать. Помогите ему.");
+
+        Card2 card004Class = new Card2("Попытаться разузнать о Бельчонке у лесных жителей",
+                "Пока Лисёнок принимал решение, лесные жители разошлись кто куда.  \n " +
+                        "Остались только Сова и Волк. Но у Совы бывают проблемы с памятью,  \n" +
+                        "а Волк может сильно разозлиться из-за расспросов. Кого выбрать?.");
+        Card2 card005Class = new Card2("Расспросить Сову",
+                "Сова долго не хотела говорить, но в итоге сказала, что видела испуганного Бельчонка,   \n " +
+                        "бежавшего вглубь леса. Все лесные жители знают, что в глубине леса опасно, \n" +
+                        "если Бельчонок там, ему срочно нужна помощь.");
+        Card2 card006Class = new Card2("Расспросить Волка",
+                "Волк оказался вполне дружелюбным, но помочь не смог. Лишь сказал, что  \n " +
+                        "маленькому лисенку не стоит бродить по лесу одному. И как  \n" +
+                        "теперь поступить?");
+
+        card001Class.setPrev(card003Class);
+        card001Class.setNext(card002Class);
+        card002Class.setPrev(null);
+        card002Class.setNext(null);
+        card003Class.setPrev(card004Class);
+        card003Class.setNext(card004Class);
+        card004Class.setPrev(card005Class);
+        card004Class.setNext(card005Class);
+        card005Class.setPrev(card001Class);
+        card005Class.setNext(card001Class);
+        card006Class.setPrev(card002Class);
+        card006Class.setNext(card001Class);
+
+        Menu mainMenu = new Menu();
+        mainMenu.addCommand("Начать игру", new Start(card001Class), false);
+        mainMenu.addCommand("Загрузить игру", new Load(), false);
+        mainMenu.addCommand("Покинуть игру", new Exit(), false);
+
+        Game game = new Game(card001Class, mainMenu);
+
+        game.start();
     }
 }
