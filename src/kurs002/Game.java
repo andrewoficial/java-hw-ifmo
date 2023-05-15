@@ -1,67 +1,79 @@
 package kurs002;
 import kurs002.menu.Exit;
-import kurs002.menu.Save;
+import kurs002.menu.Menu;
+import kurs002.menu.Start;
+//import kurs002.menu.Save;
 
 import java.util.*;
 
 public class Game {
-    private Card2 currentCard;
-
+    private final Card startCard;
+    private Card currentCard;
     private Scanner sc = new Scanner(System.in);
-
-    boolean showHidden;
-
     private Menu menu;
 
-    public Game(Card2 card, Menu menu){
+    public Game(Card card, Menu menu){
         this.currentCard = card;
+        this.startCard = card;
         this.menu = menu;
     }
 
     public void start(){
+        int numberOfItems = menu.renderMenu("Главное меню");
+        String userInp = null;
+        int userAns = 0;
+        do {
+            userInp = sc.nextLine();
+            userAns = Utils.getDigit(userInp);
+        }while(userAns <= 0 || userAns > numberOfItems);
 
-
-        while (true) {
-            menu.renderMenu("Главное меню", showHidden);
-            String userInp = sc.nextLine();
-            int userAns = -1;
-            try{
-                userAns = Integer.parseInt(userInp);
-                userAns--;
-            }catch (Exception e){
-                //System.out.println("DBG: Not number......"+userInp);
-            }
-            /*
-            System.out.println("Have command: "+ menu.get(userAns).getCommand() != null);
-            System.out.println("Correct number: "+ (userAns > 0 && userAns < menu.size()));
-            System.out.println("    userAns > 0: "+ (userAns > 0));
-            System.out.println("    userAns < menu.size(): "+ (userAns < menu.size()));
-            System.out.println("    input: "+ (userAns));
-            */
-
-
-            if (userAns > -1 && userAns < menu.size() && menu.getCommand(userAns) != null) {
-                if(menu.getName(userAns).equals("Начать игру")){
-                    menu.setCommand(2, "Сохранить игру", new Save(currentCard), true);
-                    menu.addCommand("Покинуть игру", new Exit(), false);
-                    showHidden = true;
-                    System.out.println("DBG: Run Game..."+userInp);
-                }
-                menu.getCommand(userAns).execute();
-            }else if(userAns == menu.size()-1){
-                System.out.println("Выход через главное меню");
-                new Exit().execute();
-            }else{
-                System.out.println("Некорректный ввод, повторите попытку");
-            }
+        //Получили ответ от пользователя
+        // Как, например запустить класс Save или Load, если меню пункты меню нигде не хранят информацию о том что
+        //они запускают.
+        // Получается что нужно везде разбирать ответ от пользователя?
+        System.out.println("Run execute");
+        if(userAns == 1){
+            playCards(currentCard);
+        }else if(userAns == 3){
+            System.exit(0);
         }
-
-
+        //menu.getByNumber(userAns).execute(this);
     }
 
-    public Card2 getCurrentCard() {
-        return currentCard;
+    public void playCards(Card card){
+        if(card != null)
+            currentCard = card;
+        //Как мне менять меню в зависимости от текущего положения в игре,
+        //если у MenuItem private final String name???
+        menu.getByNumber(1).set
+        int numberOfItems = menu.renderMenu(card.getTitle());
+        String userInp = null;
+        int userAns = 0;
+        do {
+            userInp = sc.nextLine();
+            userAns = Utils.getDigit(userInp);
+        }while(userAns <= 0 || userAns > 3);
+
+        switch (userAns){
+            case 1:
+                playCards(currentCard.getNext());
+                break;
+            case 2:
+                playCards(currentCard.getPrev());
+                break;
+            case 3:
+                menu.getByName("Сохранить").setHidden(false);
+                menu.getByName("Вернуться в игру").setHidden(false);
+                start();
+        }
     }
 
+    public Card getCurrentCard(){
+        if(currentCard != null){
+            return currentCard;
+        }else{
+            return startCard;
+        }
+    }
 }
 

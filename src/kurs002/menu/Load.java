@@ -1,8 +1,7 @@
 package kurs002.menu;
-
-import kurs002.Card2;
+/*
+import kurs002.Card;
 import kurs002.Command;
-import kurs002.Menu;
 
 import java.io.*;
 import java.util.HashMap;
@@ -10,14 +9,14 @@ import java.util.Scanner;
 
 import static kurs002.menu.Save.isDigit;
 
-public class Load implements Command {
-    HashMap<String, Card2> myHashMap;
+public class Load extends MenuItem {
+    HashMap<String, Card> myHashMap;
     boolean notFound;
-    public HashMap <String, Card2> readSave(){
-        HashMap<String, Card2> myHashMap = new HashMap<>();
+    public HashMap <String, Card> readSave(){
+        HashMap<String, Card> myHashMap = new HashMap<>();
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("hashmap.ser"))) {
-            myHashMap = (HashMap<String, Card2>) inputStream.readObject();
+            myHashMap = (HashMap<String, Card>) inputStream.readObject();
             //System.out.println("HashMap has been read from the file.");
         } catch (IOException | ClassNotFoundException e) {
             //e.printStackTrace();
@@ -25,13 +24,7 @@ public class Load implements Command {
             notFound = true;
         }
 
-        /* В случае отладки  ̶р̶а̶з̶б̶и̶т̶ь̶ ̶с̶т̶е̶к̶л̶о̶ раскомментировать
-        if (myHashMap != null) {
-            for (String key : myHashMap.keySet()) {
-                System.out.println(key + ": " + myHashMap.get(key));
-            }
-        }
-        */
+
         return myHashMap;
     }
     @Override
@@ -42,7 +35,7 @@ public class Load implements Command {
             myHashMap = readSave(); //Обновление переменной, что бы не считывать много раз
             loadMenu.clean();  //Очистка массива с пунктами меню
             for (String s : myHashMap.keySet()) {
-                loadMenu.addCommand(s, new Start(myHashMap.get(s)), false);//Добавление найденных сохранений в массив с пунктами меню
+                //loadMenu.addCommand(s, new Start(myHashMap.get(s)), false);//Добавление найденных сохранений в массив с пунктами меню
             }
             loadMenu.addCommand("Выход из сохранений", null, false);//Последний пункт
 
@@ -66,4 +59,7 @@ public class Load implements Command {
 
         }
     }
+
+
 }
+        */

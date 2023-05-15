@@ -1,23 +1,22 @@
 package kurs002.menu;
-
-import kurs002.Card2;
+/*
+import kurs002.Card;
 import kurs002.Command;
-import kurs002.Menu;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-
-public class Save implements Command {
-    Card2 card = null;
-    public Save(Card2 card){
+/*
+public class Save extends MenuItem {
+    Card card = null;
+    public Save(Card card){
         this.card = card;
     }
-    HashMap<String, Card2> myHashMap;
-       private void writeSave(Card2 card, String position){
-           HashMap<String, Card2> myHashMap = new HashMap<>();
+    HashMap<String, Card> myHashMap;
+       private void writeSave(Card card, String position){
+           HashMap<String, Card> myHashMap = new HashMap<>();
            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("hashmap.ser"))) {
-               myHashMap = (HashMap<String, Card2>) inputStream.readObject();
+               myHashMap = (HashMap<String, Card>) inputStream.readObject();
                //System.out.println("HashMap has been read from the file.");
            } catch (IOException | ClassNotFoundException e) {
 
@@ -31,24 +30,17 @@ public class Save implements Command {
            }
     }
 
-    public HashMap <String, Card2> readSave(){
-        HashMap<String, Card2> myHashMap = new HashMap<>();
+    public HashMap <String, Card> readSave(){
+        HashMap<String, Card> myHashMap = new HashMap<>();
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("hashmap.ser"))) {
-            myHashMap = (HashMap<String, Card2>) inputStream.readObject();
+            myHashMap = (HashMap<String, Card>) inputStream.readObject();
             //System.out.println("HashMap has been read from the file.");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             myHashMap.put("Сохранений не найдено", null);
         }
 
-        /* В случае отладки  ̶р̶а̶з̶б̶и̶т̶ь̶ ̶с̶т̶е̶к̶л̶о̶ раскомментировать
-        if (myHashMap != null) {
-            for (String key : myHashMap.keySet()) {
-                System.out.println(key + ": " + myHashMap.get(key));
-            }
-        }
-        */
         return myHashMap;
     }
 
@@ -67,7 +59,7 @@ public class Save implements Command {
         Menu saveMenu = new Menu();
         Scanner scanner = new Scanner(System.in);
         while(true){
-            HashMap <String, Card2> myHashMap = readSave(); //Обновление переменной, что бы не считывать много раз
+            HashMap <String, Card> myHashMap = readSave(); //Обновление переменной, что бы не считывать много раз
             saveMenu.clean();  //Очистка массива с пунктами меню
 
             for (String s : myHashMap.keySet()) {
@@ -99,3 +91,4 @@ public class Save implements Command {
 
     }
 }
+*/

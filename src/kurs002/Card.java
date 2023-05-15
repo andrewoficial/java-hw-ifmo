@@ -2,29 +2,29 @@ package kurs002;
 
 import java.io.Serializable;
 
-public class Card2 implements Serializable {
-    private Card2 prev;
-    private Card2 next;
+public class Card implements Serializable {
+    private Card prev;
+    private Card next;
     private String title;
     private String content;
 
-    public Card2(String title, String content){
+    public Card(String title, String content){
         if(title == null || content == null){
             throw new IllegalArgumentException("Wrong content");
         }
         this.title = title;
         this.content = content;
     }
-    public void setNext(Card2 card){
+    public void setNext(Card card){
         this.next = card;
     }
-    void setPrev(Card2 card){
+    void setPrev(Card card){
         this.prev = card;
     }
-    public Card2 getNext(){
+    public Card getNext(){
         return next;
     }
-    public Card2 getPrev(){
+    public Card getPrev(){
         return prev;
     }
     public String getContent(){
