@@ -37,7 +37,7 @@ public class Save extends MenuItem {
 
     @Override
     public void execute(Game game) {
-        Menu saveMenu = game.getMenu();
+        Menu saveMenu = new Menu();
         Scanner scanner = new Scanner(System.in);
         while(true){
             saveMenu.clean();  //Очистка массива с пунктами меню
@@ -56,6 +56,7 @@ public class Save extends MenuItem {
             if(Utils.isDigit(input)){//Если число, то попытка записать сохранение со старым именем
                 int answ = Integer.parseInt(input); //Ответ в число
                 if(answ == saveMenu.getSize() - 1){
+                    System.out.println("Выход в главное меню ");
                     game.start();
                     break;
                 }
@@ -65,8 +66,9 @@ public class Save extends MenuItem {
                         saveMenu.getByNumber(answ).execute(game);
                     }else{//Если это списочный пункт меню (просто для вывода текста)
                         writeSave(card, saveMenu.getByNumber(answ).getName());
-                        System.out.println("Сохранено! С именем saveMenu.getByNumber(answ).getName()");
+                        System.out.println("Сохранено! С именем " + saveMenu.getByNumber(answ).getName());
                         System.out.println();
+                        game.start();
                         //break;
                     }
                 }else{
