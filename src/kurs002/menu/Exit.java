@@ -3,8 +3,9 @@ package kurs002.menu;
 import kurs002.Game;
 
 public class Exit extends MenuItem {
-    public Exit(String name, boolean hidden) {
-        super(name, hidden);
+    public Exit(Game game) {
+        super("Ololo", 0, null);
+        //Возможно сохранение чего-нибудь
     }
 
     @Override

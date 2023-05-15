@@ -8,6 +8,10 @@ public class Menu {
     public void addCommand(MenuItem item){
         menu.add(item);
     }
+
+    public void removeCommand(MenuItem item){
+        menu.remove(item);
+    }
     public MenuItem getByName(String name){
         for (MenuItem menuItem : menu) {
             if(menuItem.getName().equalsIgnoreCase(name))
@@ -40,4 +44,10 @@ public class Menu {
         }
         return numberOfItems;
     }
+
+    public int getSize(){
+        return menu.size();
+    }
+
+
 }

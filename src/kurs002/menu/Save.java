@@ -1,89 +1,85 @@
 package kurs002.menu;
-/*
+
 import kurs002.Card;
-import kurs002.Command;
+import kurs002.FileHandler;
+import kurs002.Game;
+import kurs002.Utils;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-/*
+
 public class Save extends MenuItem {
     Card card = null;
-    public Save(Card card){
-        this.card = card;
-    }
-    HashMap<String, Card> myHashMap;
-       private void writeSave(Card card, String position){
-           HashMap<String, Card> myHashMap = new HashMap<>();
-           try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("hashmap.ser"))) {
-               myHashMap = (HashMap<String, Card>) inputStream.readObject();
-               //System.out.println("HashMap has been read from the file.");
-           } catch (IOException | ClassNotFoundException e) {
+    FileHandler handler = new FileHandler();
+    HashMap<String, Card> myHashMap = handler.getMap(); ;
 
-           }
-           myHashMap.put(position, card);
-           try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("hashmap.ser"))) {
-               outputStream.writeObject(myHashMap);
-               //System.out.println("HashMap has been written to the file.");
-           } catch (IOException e) {
-               //e.printStackTrace();
-           }
+    public Save(Game game){
+        super("Строка просто потому что IDE попросила", 0, null);
+        this.card = game.getCurrentCard();
     }
 
-    public HashMap <String, Card> readSave(){
-        HashMap<String, Card> myHashMap = new HashMap<>();
-
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("hashmap.ser"))) {
-            myHashMap = (HashMap<String, Card>) inputStream.readObject();
-            //System.out.println("HashMap has been read from the file.");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            myHashMap.put("Сохранений не найдено", null);
-        }
-
-        return myHashMap;
+   private void writeSave(Card card, String position){
+       myHashMap.put(position, card);
+       try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("hashmap.ser"))) {
+           outputStream.writeObject(myHashMap);
+           //System.out.println("HashMap has been written to the file.");
+       } catch (IOException e) {
+           //e.printStackTrace();
+           System.out.println("Возникла ошибка при сохранении :(");
+       }
     }
 
-    public static boolean isDigit(String s) throws NumberFormatException {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
+
+
+
 
 
     @Override
-    public void execute() {
-        Menu saveMenu = new Menu();
+    public void execute(Game game) {
+        Menu saveMenu = game.getMenu();
         Scanner scanner = new Scanner(System.in);
         while(true){
-            HashMap <String, Card> myHashMap = readSave(); //Обновление переменной, что бы не считывать много раз
             saveMenu.clean();  //Очистка массива с пунктами меню
 
             for (String s : myHashMap.keySet()) {
-                saveMenu.addCommand(s, null, true);//Добавление найденных сохранений в массив с пунктами меню
+                saveMenu.addCommand(new MenuItem(s, saveMenu.getSize() + 1, null));//Добавление найденных сохранений в массив с пунктами меню
             }
-            saveMenu.addCommand("Выход из сохранений",null, true);//Последний пункт
-            saveMenu.renderMenu("Меню сохранения ^___^ \n Укажите номер или введите новое имя", true); //Вывод через println
+
+            saveMenu.addCommand(new MenuItem("Выход в главное меню", saveMenu.getSize() + 1, game));//Последний пункт
+            saveMenu.addCommand(new MenuItem("Покинуть игру (закрыть приложение)", saveMenu.getSize() + 1, new Exit(game)));//Последний пункт
+
+            saveMenu.renderMenu("Меню сохранения ^___^ \n Укажите номер или введите новое имя"); //Вывод через println
 
             String input = scanner.nextLine();
 
-            if(isDigit(input)){//Если число, то попытка загрузить сохранение
+            if(Utils.isDigit(input)){//Если число, то попытка записать сохранение со старым именем
                 int answ = Integer.parseInt(input); //Ответ в число
-                answ--;
-                if(answ > 0 && answ <= saveMenu.size()-2){ //Если существующий пункт меню
-                    if(myHashMap.get(saveMenu.getName(answ)) != null) { //Если сохранений не, то ничего не делать
-                        writeSave(card, saveMenu.getName(answ));
-                    }
-                }else if(answ == saveMenu.size()-1){ //Если выход
+                if(answ == saveMenu.getSize() - 1){
+                    game.start();
                     break;
+                }
+
+                if(answ > 0 && answ <= saveMenu.getSize() && saveMenu.getByNumber(answ) != null){ //Если существующий пункт меню
+                    if(saveMenu.getByNumber(answ).isRunnable()) { //Если это функциональный пункт меню, запустить
+                        saveMenu.getByNumber(answ).execute(game);
+                    }else{//Если это списочный пункт меню (просто для вывода текста)
+                        writeSave(card, saveMenu.getByNumber(answ).getName());
+                        System.out.println("Сохранено! С именем saveMenu.getByNumber(answ).getName()");
+                        System.out.println();
+                        //break;
+                    }
                 }else{
-                    System.out.println("Неверный ввод...");
+                    System.out.println("Неверный ввод...answ > 0 && answ <= saveMenu.getSize()");
                 }
             }else{
-                writeSave(card, input);
+                //Ввод произвольного имени нового сохранения
+                if(input.length() < 3){
+                    System.out.println("Слишком короткое имя");
+                }else {
+                    writeSave(card, input);
+                    //break;
+                }
             }
 
         }
@@ -91,4 +87,3 @@ public class Save extends MenuItem {
 
     }
 }
-*/
