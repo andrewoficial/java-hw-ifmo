@@ -15,7 +15,7 @@ public class Save extends MenuItem {
     HashMap<String, Card> myHashMap = handler.getMap(); ;
 
     public Save(Game game){
-        super("Строка просто потому что IDE попросила", 0, null);
+        super("Сохранить", game.getMenu().getSize()+1);
         this.card = game.getCurrentCard();
     }
 
@@ -43,11 +43,11 @@ public class Save extends MenuItem {
             saveMenu.clean();  //Очистка массива с пунктами меню
 
             for (String s : myHashMap.keySet()) {
-                saveMenu.addCommand(new MenuItem(s, saveMenu.getSize() + 1, null));//Добавление найденных сохранений в массив с пунктами меню
+                saveMenu.addCommand(new MenuItem(s, saveMenu.getSize() + 1));//Добавление найденных сохранений в массив с пунктами меню
             }
 
-            saveMenu.addCommand(new MenuItem("Выход в главное меню", saveMenu.getSize() + 1, game));//Последний пункт
-            saveMenu.addCommand(new MenuItem("Покинуть игру (закрыть приложение)", saveMenu.getSize() + 1, new Exit(game)));//Последний пункт
+            saveMenu.addCommand(new MenuItem("Выход в главное меню", saveMenu.getSize() + 1));//Последний пункт
+            saveMenu.addCommand(new Exit(game, saveMenu));//Последний пункт//Последний пункт
 
             saveMenu.renderMenu("Меню сохранения ^___^ \n Укажите номер или введите новое имя"); //Вывод через println
 
@@ -62,7 +62,7 @@ public class Save extends MenuItem {
                 }
 
                 if(answ > 0 && answ <= saveMenu.getSize() && saveMenu.getByNumber(answ) != null){ //Если существующий пункт меню
-                    if(saveMenu.getByNumber(answ).isRunnable()) { //Если это функциональный пункт меню, запустить
+                    if(saveMenu.getByNumber(answ).getClass() != MenuItem.class) { //Если это функциональный пункт меню, запустить
                         saveMenu.getByNumber(answ).execute(game);
                     }else{//Если это списочный пункт меню (просто для вывода текста)
                         writeSave(card, saveMenu.getByNumber(answ).getName());
@@ -83,6 +83,8 @@ public class Save extends MenuItem {
                     //break;
                 }
             }
+
+
 
         }
 

@@ -15,9 +15,8 @@ public class Load extends MenuItem {
     HashMap<String, Card> myHashMap;
     boolean notFound;
 
-    public Load(Game game){
-        //Не понял как эффективно использовать этот конструктор MenuItem. А вот было бы через интерфейс Executor было бы проще><
-        super("Строка просто потому что IDE попросила", 0, null);
+    public Load(String name, int position, Game game){
+        super(name, position);
     }
 
     @Override
@@ -28,6 +27,7 @@ public class Load extends MenuItem {
         Menu loadMenu = new Menu();
         FileHandler handler = new FileHandler();
         while(true){
+
             loadMenu.clean();
             if(handler.hasSavedGame() == false){
                 notFound = true;
@@ -39,13 +39,13 @@ public class Load extends MenuItem {
                 myHashMap = handler.getMap(); //Создание мапы с сохранениями
 
             for (String s : myHashMap.keySet()) {
-                loadMenu.addCommand(new MenuItem(s, loadMenu.getSize() + 1, null));//Добавление найденных сохранений в массив с пунктами меню
+                loadMenu.addCommand(new MenuItem(s, loadMenu.getSize() + 1));//Добавление найденных сохранений в массив с пунктами меню
             }
 
             }
 
-            loadMenu.addCommand(new MenuItem("Выход в главное меню", loadMenu.getSize() + 1, null));//Последний пункт
-            loadMenu.addCommand(new MenuItem("Покинуть игру (закрыть приложение)", loadMenu.getSize() + 1, new Exit(game)));//Последний пункт
+            loadMenu.addCommand(new MenuItem("Выход в главное меню", loadMenu.getSize() + 1));//Последний пункт
+            loadMenu.addCommand(new Exit(game, loadMenu));//Последний пункт
             loadMenu.renderMenu("Выбор слотов сохранения:"); //Вывод через println
 
 
@@ -59,7 +59,7 @@ public class Load extends MenuItem {
                     break;
                 }
                 if(answ > 0 && answ <= loadMenu.getSize() && loadMenu.getByNumber(answ) != null){              //.....Если существующий пункт меню (а так как оно статическое....)
-                    if(loadMenu.getByNumber(answ).isRunnable()){
+                    if(loadMenu.getByNumber(answ).getClass() != MenuItem.class){
                         loadMenu.getByNumber(answ).execute(game);
                     }else{
                         game.playCards(myHashMap.get(loadMenu.getByNumber(answ).getName()));
@@ -72,6 +72,8 @@ public class Load extends MenuItem {
             }else{
                 System.out.println("Неверный ввод... (Строку нельзя вводить)");
             }
+
+
 
         }
     }

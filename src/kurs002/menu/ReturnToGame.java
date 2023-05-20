@@ -5,7 +5,7 @@ import kurs002.Game;
 public class ReturnToGame extends MenuItem{
 
     public ReturnToGame(Game game) {
-        super("-", 0, null);
+        super("Вернутся к игре", game.getMenu().getSize());
     }
     @Override
     public void execute(Game game) {

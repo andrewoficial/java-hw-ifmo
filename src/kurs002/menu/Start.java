@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Start extends MenuItem {
 
     public Start(String name){
-        super("Ololo", 0, null);
+        super("Начать игру", 1);
     }
 
     @Override

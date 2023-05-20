@@ -34,13 +34,13 @@ public class Card implements Serializable {
         return title;
     }
 
+
     @Override
     public String toString() {
         return "Card{" +
-                "type='" + "Card'" +
-                "title='" + title + '\'' +
+                "prev=" + prev +
+                ", next=" + next +
+                ", title='" + title + '\'' +
                 '}';
     }
-
-
 }

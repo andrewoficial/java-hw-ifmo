@@ -11,7 +11,7 @@ public class Game extends MenuItem {
     private Menu menu;
 
     public Game(Card card, Menu menu){
-        super("Ololo", 0, null);
+        super("Начать игру", 1);
         this.currentCard = card;
         this.startCard = card;
         this.menu = menu;
@@ -19,7 +19,7 @@ public class Game extends MenuItem {
 
     public Game(Game game){
         //Создаются пункты....
-        super("Ololo", 0, null);
+        super("Начать игру", 1);
         this.currentCard = game.getCurrentCard();
         this.startCard = game.getCurrentCard();
         this.menu = game.getMenu();
@@ -42,20 +42,30 @@ public class Game extends MenuItem {
         if(card != null)
             currentCard = card;
 
-        if(menu.getByName("Вернуться в игру") != null){
+        if(menu.getByName("Вернутся к игре") != null){
             //Убираю пункты "Сохранить" и "Вернуться....", пользователь уже играет.
+            //System.out.println("Do short menu");
             menu.removeCommand(menu.getByName("Сохранить"));
-            menu.removeCommand(menu.getByName("Вернуться в игру"));
+            menu.removeCommand(menu.getByName("Вернутся к игре"));
         }
 
 
         if(card.getNext() == null || card.getPrev() == null){
+            /*
+            //DBG
+            if(card.getNext() == null){
+                System.out.println("card.getNext() == null");
+            }else if(card.getPrev() == null){
+                System.out.println("card.getPrev() == null");
+            }else{
+                System.out.println("DUNNO!");
+            }
+            //System.out.println(card.toString());
+            //endDBG
+
+             */
             Utils.myPrint(card.getContent());
-            menu.getByNumber(1).setName("Начать игру");
-            menu.getByNumber(2).setName("Загрузить игру");
-            menu.addCommand(new MenuItem("Сохранить",2, new Save(this)));
-            menu.addCommand(new MenuItem("Вернуться в игру",3, new ReturnToGame(this))); //Еще не дописано
-            start();
+            backToMenu();
         }
 
         Utils.myPrint(card.getContent());
@@ -77,14 +87,17 @@ public class Game extends MenuItem {
                 playCards(currentCard.getPrev());
                 break;
             case 3:
-                menu.getByNumber(1).setName("Начать игру");
-                menu.getByNumber(2).setName("Загрузить игру");
-                menu.addCommand(new MenuItem("Сохранить",2, new Save(this)));
-                menu.addCommand(new MenuItem("Вернуться в игру",3,  new ReturnToGame(this))); //Еще не дописано
-                start();
+                backToMenu();
         }
     }
 
+    private void backToMenu(){
+        menu.getByNumber(1).setName("Начать игру");
+        menu.getByNumber(2).setName("Загрузить игру");
+        menu.insertCommand(new Save(this), menu.getByName("Загрузить игру").getNumber()+1);
+        //menu.addCommand(new ReturnToGame(this)); //Еще не дописано
+        start();
+    }
     public Card getCurrentCard(){
         if(currentCard != null){
             return currentCard;

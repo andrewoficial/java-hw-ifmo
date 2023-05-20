@@ -32,27 +32,68 @@ public class Application {
         Card card006Class = new Card("Расспросить Волка",
                 "Волк оказался вполне дружелюбным, но помочь не смог. Лишь сказал, что маленькому " +
                         "лисенку не стоит бродить по лесу одному. И как  теперь поступить?");
-
-        card001Class.setPrev(card003Class);
-        card001Class.setNext(card002Class);
+        Card card007Class = new Card("Искать Бельчонка в одиночку",
+                "Лисёнок слишком долго плутал по лесу в поисках друга и сам не заметил, как заблудился. " +
+                        "Теперь его самого нужно искать. Игра завершилась неудачей");
+        Card card008Class = new Card("Поверить Сове и отправиться вглубь леса",
+                "В глубине леса Лисёнок встретил Медвежонка. Ленивый Медвежонок был готов рассказать все, " +
+                        "что знает, если Лисёнок принесёт ему мёда.");
+        Card card009Class = new Card("Нужно воспользоваться шансом и раздобыть мёд",
+                "Лисёнок быстро нашёл мёд, но вокруг летал рой злобных пчел. Лисёнок всегда боялся пчёл, " +
+                        "но и не найти друга он тоже боялся.");
+        Card card010Class = new Card("Нужно попытаться выкрасть мёд немедленно",
+                "Это была не лучшая идея. Пчёлы покусали Лисёнка, теперь ему " +
+                        "самому нужна помощь. Игра завершилась неудачей");
+        Card card011Class = new Card("Подождать, вдруг пчёлы улетят",
+                "Лисёнок подождал немного, и пчёлы разлетелись. Лисёнок без проблем набрал мёда. " +
+                        "Вдруг он понял, что очень голоден. Что же делать?");
+        Card card012Class = new Card("Поесть немного и передохнуть",
+                "Пока Лисёнок ел, злобные пчёлы вернулись и покусали его. Лисёнку нужна помощь, он " +
+                        "не сможет продолжить поиски. Игра завершилась неудачей");
+        Card card013Class = new Card("Скорее отнести мёд Медвежонку",
+                "Довольный Медвежонок рассказал Лисёнку, что очень хорошо знает семью Белок и уверен, что " +
+                        "Бельчонок никогда не пошёл бы в глубь леса. Он заверял Лисёнка, что Белки не попадают в неприятности, " +
+                        "и что Совам нельзя верить, он также уговаривал Лисёнка вернуться домой.");
+            card001Class.setPrev(card003Class);
+            card001Class.setNext(card002Class);
         card002Class.setPrev(null);
         card002Class.setNext(null);
-        card003Class.setPrev(card004Class);
-        card003Class.setNext(card004Class);
+            card003Class.setPrev(card004Class);
+            card003Class.setNext(card007Class);
         card004Class.setPrev(card005Class);
-        card004Class.setNext(card005Class);
-        card005Class.setPrev(card001Class);
-        card005Class.setNext(card001Class);
+        card004Class.setNext(card006Class);
+            card005Class.setPrev(card008Class);
+            card005Class.setNext(card007Class);
         card006Class.setPrev(card002Class);
-        card006Class.setNext(card001Class);
+        card006Class.setNext(card007Class);
+            card007Class.setPrev(null);
+            card007Class.setNext(null);
+        card008Class.setPrev(card007Class);
+        card008Class.setNext(card009Class);
+            card009Class.setPrev(card010Class);
+            card009Class.setNext(card011Class);
+        card010Class.setPrev(null);
+        card010Class.setNext(null);
+            card011Class.setPrev(card012Class);
+            card011Class.setNext(card013Class);
+        card012Class.setPrev(null);
+        card012Class.setNext(null);
+            card013Class.setPrev(card007Class);
+            card013Class.setNext(card002Class);
+
+
+
+
+
+
 
         Menu mainMenu = new Menu();
 
         Game game = new Game(card001Class, mainMenu);
 
-        mainMenu.addCommand(new MenuItem("Начать игру",1, game));
-        mainMenu.addCommand(new MenuItem("Загрузить игру",2, new Load(game)));
-        mainMenu.addCommand(new MenuItem("Покинуть игру",3, new Exit(game)));
+        mainMenu.addCommand(game);
+        mainMenu.addCommand(new Load("Загрузить игру",2, game));
+        mainMenu.addCommand(new Exit(game));
 
 
 
