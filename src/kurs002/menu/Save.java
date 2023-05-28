@@ -13,7 +13,8 @@ public class Save extends MenuItem {
     Card card = null;
     FileHandler handler = new FileHandler();
     HashMap<String, Card> myHashMap = handler.getMap(); ;
-
+    Menu saveMenu = new Menu();
+    Scanner scanner = new Scanner(System.in);
     public Save(Game game){
         super("Сохранить", game.getMenu().getSize()+1);
         this.card = game.getCurrentCard();
@@ -30,31 +31,34 @@ public class Save extends MenuItem {
        }
     }
 
-
+    private void makeMenu(Game game){
+        saveMenu.clean();  //Очистка массива с пунктами меню
+        for (String s : myHashMap.keySet()) {
+            saveMenu.addCommand(new MenuItem(s, saveMenu.getSize() + 1));//Добавление найденных сохранений в массив с пунктами меню
+        }
+        saveMenu.addCommand(new MenuItem("Выход в главное меню", saveMenu.getSize() + 1));//Последний пункт
+        saveMenu.addCommand(new Exit(game, saveMenu));//Последний пункт
+        saveMenu.renderMenu("Меню сохранения ^___^ \n Укажите номер или введите новое имя"); //Вывод через println
+    }
 
 
 
 
     @Override
     public void execute(Game game) {
-        Menu saveMenu = new Menu();
-        Scanner scanner = new Scanner(System.in);
+
+        //Заметка: StringBuffer потокобезопасен, и все его методы синхронизированы, а StringBuilder — нет.
+        StringBuilder userInput = new StringBuilder();
+        //Тут и так не создается новых объектов (только сканер вынес как поле класса). Остальное из цикла не убрать,
+        //  потому что я хочу что бы после ввода нового сохранения оно сразу появлялось в меню
         while(true){
-            saveMenu.clean();  //Очистка массива с пунктами меню
+            makeMenu(game);
+            userInput.setLength(0);
+            userInput.append( scanner.nextLine()); //Попытка заменить пересоздание объекта строки на стрингбилдер.
+            //Но в скобках все равно создается строка. Правда она анонимная, возможно от этого лучше будет
 
-            for (String s : myHashMap.keySet()) {
-                saveMenu.addCommand(new MenuItem(s, saveMenu.getSize() + 1));//Добавление найденных сохранений в массив с пунктами меню
-            }
-
-            saveMenu.addCommand(new MenuItem("Выход в главное меню", saveMenu.getSize() + 1));//Последний пункт
-            saveMenu.addCommand(new Exit(game, saveMenu));//Последний пункт//Последний пункт
-
-            saveMenu.renderMenu("Меню сохранения ^___^ \n Укажите номер или введите новое имя"); //Вывод через println
-
-            String input = scanner.nextLine();
-
-            if(Utils.isDigit(input)){//Если число, то попытка записать сохранение со старым именем
-                int answ = Integer.parseInt(input); //Ответ в число
+            if(Utils.isDigit(String.valueOf(userInput))){//Если число, то попытка записать сохранение со старым именем
+                int answ = Integer.parseInt(String.valueOf(userInput)); //Ответ в число
                 if(answ == saveMenu.getSize() - 1){
                     System.out.println("Выход в главное меню ");
                     game.start();
@@ -72,22 +76,16 @@ public class Save extends MenuItem {
                         //break;
                     }
                 }else{
-                    System.out.println("Неверный ввод...answ > 0 && answ <= saveMenu.getSize()");
+                    System.out.println("Неверный ввод номера существующего имени...");
                 }
             }else{
                 //Ввод произвольного имени нового сохранения
-                if(input.length() < 3){
+                if(userInput.length() < 3){
                     System.out.println("Слишком короткое имя");
                 }else {
-                    writeSave(card, input);
-                    //break;
+                    writeSave(card, String.valueOf(userInput));
                 }
             }
-
-
-
         }
-
-
     }
 }
