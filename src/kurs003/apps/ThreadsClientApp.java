@@ -1,6 +1,7 @@
 package kurs003.apps;
 
 import kurs003.common.Message;
+import kurs003.common.TextFile;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -71,6 +72,48 @@ public class ThreadsClientApp {
                 if("/exit".equalsIgnoreCase(text)){
                     System.out.println("Завершаю работу клиентской программы");
                     break;
+                }else if("/sendFile".equalsIgnoreCase(text)){
+                    System.out.println("Введите имя файла");
+                    TextFile file = new TextFile(scanner.nextLine());
+                    System.out.println("Введите описание");
+                    file.setDescription(scanner.nextLine());
+                    System.out.println("Введите текст фала (/done - для завершения накопления файла)");
+                    String fileContent = "";
+                    String input = "";
+                    while (scanner.hasNextLine()){
+                        input = scanner.nextLine();
+                        if("/done".equalsIgnoreCase(input)){
+                            break;
+                        }
+                        fileContent += input + "\n";
+                    }
+                    file.setContent(fileContent);
+                    file.setIdentify(clientIdentify);
+                    try{
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
+                        oos.writeObject(file);
+                        oos.flush();
+                        byte[] bytes = byteArrayOutputStream.toByteArray();
+                        //Передавать будем как было в уроке 27.
+
+                        output.write(bytes);
+
+                        oos.close();
+                        byteArrayOutputStream.close();
+                    }catch (IOException e){
+                        System.out.println("Удаленный сервер перестал отвечать");
+                        try {
+                            output.close();
+                            socket.close();
+                        } catch (Exception ex) {
+                            System.out.println("Ошибка закрытия ресурса");
+                        }
+
+
+                        return;
+                    }
+
                 }
 
                 msg = new Message(text, token);

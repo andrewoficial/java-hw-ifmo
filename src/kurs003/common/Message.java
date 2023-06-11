@@ -3,7 +3,7 @@ package kurs003.common;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Message implements Serializable {
+public class Message extends Package implements Serializable {
     private String text;
     private String identify;
     private LocalDateTime sent;

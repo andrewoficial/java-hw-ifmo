@@ -1,8 +1,6 @@
 package kurs003.apps;
 
-import kurs003.common.Command;
-import kurs003.common.Connection;
-import kurs003.common.Message;
+import kurs003.common.*;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -166,58 +164,137 @@ public class NIOServerApp {
             System.out.println("Создали контейнер в котором возможно есть наш класс");
             // Далее можно прочитать объекты из ObjectInputStream
             // ...
-            try {
-                Message inpMsg = (Message) ois.readObject();
-                System.out.println("Token:" + inpMsg.getKey());
-                System.out.println("MSG:" + inpMsg.getText());
-                if(parseString(inpMsg.getText()) != null){
-                    System.out.println("found command" + parseString(inpMsg.getText()));
-                    if(Command.register.equals(parseString(inpMsg.getText()))){
-                        connection.setToken(inpMsg.getKey());
-                        connection.setName(inpMsg.getText().replaceAll("/"+Command.register, "")); //Почистили строку от команды - остльное имя
-                    }else if(Command.help.equals(parseString(inpMsg.getText()))){
-                        System.out.println("Чип и дейл спешат на помощь! Список доступных команд:");
-                        Command[] commands = Command.values();
-                        for (Command command : commands) {
-                            System.out.println("/"+command+" ");
-                        }
-                        System.out.println("Данные о вашем соединении:");
-                        System.out.println("Связанное имя:" + connection.getName());
-                        System.out.println("Связанный токен:"+connection.getToken());
-                        System.out.println("Ваш адрес:"+connection.getChannel().getRemoteAddress());
-
-                    }
-                }
-            }catch (Exception ex){
-                System.out.println("Some exception while upcasting..."+ex.getMessage());
+            Command command = null;
+            ParserPackage message =null;
+            try{
+                message = new ParserPackage(ois.readObject());
+                System.out.println("Is message: "+message.isMessage());
+                System.out.println("Is file:    "+message.isTextFile());
+            } catch (IOException e) {
+                System.out.println("Unknown network error" + e.getMessage());
+                //throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                System.out.println("Unknown message type" + e.getMessage());
+                //throw new RuntimeException(e);
             }finally {
                 ois.close();
                 byteArrayInputStream.close();
             }
-            // Закрываем ObjectInputStream и ByteArrayInputStream
+            System.out.println("Start execute...");
+            //Тут надо бы сделать общий метод execute или reaction что бы логика реакции сама определялась из типа принятой посылки
+            //Но не совсем понятно как это сделать (ведь отвечает то сервер)
+            if(message.isMessage()){
+                Message inpMsg = (Message) message.getMessage();
+                System.out.println("Token:" + inpMsg.getKey());
+                System.out.println("MSG:" + inpMsg.getText());
+                if(parseString(inpMsg.getText()) != null) {
+                    System.out.println("found command[" + parseString(inpMsg.getText()) + "]");
+                    if (Command.register.equals(parseString(inpMsg.getText()))) {
+                        connection.setToken(inpMsg.getKey());
+                        connection.setName(inpMsg.getText().replaceAll("/" + Command.register, "")); //Почистили строку от команды - остльное имя
+                        command = null;
+                    } else if (Command.help.equals(parseString(inpMsg.getText()))) {
+                        String answer = responseHelp(connection);
+                        Message msg = new Message(answer, "SERVER");
+                        sendMessage(msg, connections, channel, true);
+                    } else if (Command.sendFile.equals(parseString(inpMsg.getText()))) {
 
+                    } else if (Command.getFileList.equals(parseString(inpMsg.getText()))) {
+                        FileHandler fileHandler = new FileHandler();
+                        sendMessage(fileHandler.getFileMapList(), connections, channel, true);
+                    }else if (Command.getSomeFile.equals(parseString(inpMsg.getText()))) {
+                        FileHandler fileHandler = new FileHandler();
+                        Message msAr;
+                        msAr = fileHandler.getFileAsMessage(inpMsg.getText().replaceAll("/" + Command.getSomeFile, "")); //Почистили строку от команды - остльное имя
 
-            Message msg = new Message("Пользователь "+connection.getName()+" отправил сообщение:", "SERVER");
+                        if(msAr == null){
+                            Message errMsg = new Message("Ошибка в получении файла NIO SRV ERR", "SERVER");
+                            sendMessage(errMsg, connections, channel, true);
+                        }else{
+                            sendMessage(msAr, connections, channel, true);
+                        }
+                        // Из сериализованной мапы взять коллекцию объектов с полезной инфой
+                        // Вывести их списком. Ждать сообщения от юзера,
+                        // Если пришла команда получить файл то вывести его
+                        // (для простоты /getFile 5 -- если есть такой-то вернуть если нет, то сказать что нет)
+                    }else if (Command.delFile.equals(parseString(inpMsg.getText()))) {
+                    }else if (Command.reRegister.equals(parseString(inpMsg.getText()))) {
+                        connection.setName(inpMsg.getText().replaceAll("/" + Command.reRegister, "")); //Почистили строку от команды - остльное имя
+                        Message msg = new Message("Имя изменено на " + inpMsg.getText().replaceAll("/" + Command.reRegister, ""), "SERVER");
+                        sendMessage(msg, connections, channel, true);
+                    }else{
+                        Message msg = new Message("Неизвестная ошибка при разборе команды", "SERVER");
+                        sendMessage(msg, connections, channel, true);
+                    }
+                }else{
+                    Message msg = new Message("Пользователь "+connection.getName()+" отправил сообщение:", "SERVER");
+                    sendMessage(msg, connections, channel, false);
+                }
+            }else if(message.isTextFile()){
+                FileHandler fileHandler = new FileHandler();
+                TextFile textFile = (TextFile) message.getMessage();
+                if(textFile.getContent() != null && textFile.getContent().length() > 500){
+                    Message msg = new Message("Файл слишком велик:", "SERVER");
+                    sendMessage(msg, connections, channel, true);
+                }else{
+                    fileHandler.saveFile(textFile);
+                    Message msg = new Message("Файл был сохранен!", "SERVER");
+                    //sendMessage(msg, connections, channel, true);
+
+                    //msg = new Message("Пользователь "+connection.getName()+"добавил новый файл!", "SERVER");
+                    //sendMessage(msg, connections, channel, false);
+                }
+                //Проверить параметры файла
+                //Сохранить файл
+                //  объект с полезной нагрузкой и мета-инфой
+                //  объекты хранятся в коллекции, коллекция сериализована в файл
+                //
+            }
+
+        }
+
+        private void sendMessage(Message msg, HashSet<Connection> connections,Channel channel, boolean individual) throws IOException {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
             oos.writeObject(msg);
             oos.flush();
             byte[] bytes = byteArrayOutputStream.toByteArray();
-            //Spread message
-            for (SocketChannel socketChannel : channels) {
-                if (!socketChannel.equals(channel) && (socketChannel.validOps() & SelectionKey.OP_WRITE) > 0) { // если канал доступен для записи
-                    socketChannel.write(ByteBuffer.wrap(bytes));
-                    socketChannel.write(byteBuffer);
-                    // буфер должен быть готов к следующей записи (данные из буфера будут записаны в следующий канал)
-                    // limit (сколько данных можно забрать из буфера) остается на прежнем месте,
-                    // так как количество байт не изменилось
-                    // position (курсор) должен быть в начале буфера
-                    byteBuffer.rewind();
+            if(! individual){
+                //Spread message
+                for (SocketChannel socketChannel : channels) {
+                    if (!socketChannel.equals(channel) && (socketChannel.validOps() & SelectionKey.OP_WRITE) > 0) { // если канал доступен для записи
+                        socketChannel.write(ByteBuffer.wrap(bytes));
+                        socketChannel.write(byteBuffer);
+                        byteBuffer.rewind();
+                    }
+                }
+            }else{
+                //Spread message
+                for (SocketChannel socketChannel : channels) {
+                    if (socketChannel.equals(channel) && (socketChannel.validOps() & SelectionKey.OP_WRITE) > 0) { // если канал доступен для записи
+                        socketChannel.write(ByteBuffer.wrap(bytes));
+                        socketChannel.write(byteBuffer);
+                        byteBuffer.rewind();
+                    }
                 }
             }
+
             oos.close();
             byteArrayOutputStream.close();
+        }
 
+        private String responseHelp(Connection connection) throws IOException {
+            String str = "";
+            str += "Чип и дейл спешат на помощь! Список доступных команд: \n";
+            Command[] commands = Command.values();
+            for (Command command : commands) {
+                str += "    /"+command+" \n";
+            }
+            str += "Данные о вашем соединении:\n";
+            str += "    Связанное имя:" + connection.getName()+"\n";
+            str += "    Связанный токен:"+connection.getToken()+"\n";
+            str += "    Ваш адрес:"+connection.getChannel().getRemoteAddress()+"\n";
+            return str;
         }
 
         private Command parseString(String str){
@@ -232,11 +309,16 @@ public class NIOServerApp {
                     return Command.reRegister;
                 }else if(str.contains("/help")){
                     return Command.help;
+                }else if(str.contains("getFileList")){
+                    return Command.getFileList;
+                }else if(str.contains("getSomeFile")){
+                    return Command.getSomeFile;
                 }
 
             }
             return null;
         }
+
         @Override
         public void run() {
             try {

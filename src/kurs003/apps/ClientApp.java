@@ -33,9 +33,9 @@ public class ClientApp {
                 ){
 
                 Message message = new Message(input, "defKey");
-                readWrite.writeMessage(message);
-                Message fromServer = readWrite.readMessage();
-                logMsgC(" readWrite.readMessage" + fromServer.getText());
+                //readWrite.writeMessage(message);
+                //Message fromServer = readWrite.readMessage();
+                //logMsgC(" readWrite.readMessage" + fromServer.getText());
             } catch(UnknownHostException e){
                 logMsgC(" Ошибка адреса или порта");
             }
